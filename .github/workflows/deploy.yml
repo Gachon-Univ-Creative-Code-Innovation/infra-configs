@@ -11,12 +11,11 @@ on:
       tag: # Docker 이미지에 붙일 태그/버전 (ex: latest 등. 일반적으로 커밋 ID를 사용)
         required: true
         type: string
-
-      secrets:
-        DOCKER_USERNAME:
-          required: true
-        DOCKER_PASSWORD:
-          required: true
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
 
 jobs:
   build-and-push:
