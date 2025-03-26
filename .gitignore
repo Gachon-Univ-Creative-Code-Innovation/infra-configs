@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# SSH keys or secrets (절대 올리지 말 것)
+*.pem
+*.key
+*.crt
+*.env
+.env.*
+secrets.*
+docker/.env*
+env/*.env*
+
+# Logs
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# 시스템 파일
+Thumbs.db
