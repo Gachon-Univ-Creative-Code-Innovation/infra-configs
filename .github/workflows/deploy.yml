@@ -1,0 +1,42 @@
+# 다른 레포에서 재사용 가능한 도커 이미지 build & push 공통 액션입니다.
+name: Docker Build & Push
+
+# 직접 실행되지 않고, 다른 워크플로우에서 호출 될 때만 작동합니다.
+on:
+  workflow_call:
+    inputs:
+      service: # 어떤 서비스인지 (ex: user-service)
+        required: true
+        type: string
+      tag: # Docker 이미지에 붙일 태그/버전 (ex: latest 등. 일반적으로 커밋 ID를 사용)
+        required: true
+        type: string
+
+      secrets:
+        DOCKER_USERNAME:
+          required: true
+        DOCKER_PASSWORD:
+          required: true
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest #GitHub에서 제공하는 Linux 가상 머신에서 실행
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        # 레포지토리 코드를 현재 워크플로우 실행 환경에 가져옴
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+        # Docker Buildx 사용을 위한 환경 설정 (멀티 플랫폼 빌드 등 가능하게 해줌) -> 그럼 한 레포당 한번이면 충분한거아닌가? 멀티 플랫폼 빌드는 머임?
+
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        # Docker Hub 로그인 (시크릿 키 넣어야함)
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ inputs.service }}:${{ inputs.tag }} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ inputs.service }}:${{ inputs.tag }}
+        # 도커 이미지 빌드 -> 태그 붙이기 -> Docker Hub에 Push
