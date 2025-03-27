@@ -48,6 +48,10 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ inputs.service }}:${{ inputs.tag }} .
+          docker build \
+            -t ${{ secrets.DOCKER_USERNAME }}/${{ inputs.service }}:${{ inputs.tag }} \
+            -t ${{ secrets.DOCKER_USERNAME }}/${{ inputs.service }}:latest .
+
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ inputs.service }}:${{ inputs.tag }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ inputs.service }}:latest
         # 도커 이미지 빌드 -> 태그 붙이기 -> Docker Hub에 Push
