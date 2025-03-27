@@ -28,7 +28,19 @@ jobs:
 
       - name: Set up Docker
         uses: docker/setup-buildx-action@v3
-        # Docker Buildx 사용을 위한 환경 설정 (멀티 플랫폼 빌드 등 가능하게 해줌) -> 그럼 한 레포당 한번이면 충분한거아닌가? 멀티 플랫폼 빌드는 머임?
+        # Docker Buildx 사용을 위한 환경 설정 (멀티 플랫폼 빌드 등 가능하게 해줌)
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x ./gradlew
+
+      - name: Build JAR
+        run: ./gradlew bootJar
 
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
