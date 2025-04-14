@@ -16,6 +16,14 @@ on:
         required: true
       DOCKER_PASSWORD:
         required: true
+      PROD_DB_URL:
+        required: true
+      PROD_DB_USERNAME:
+        required: true
+      PROD_DB_PASSWORD:
+        required: true
+      JWT_SECRET:
+        required: true
 
 jobs:
   build-and-push:
@@ -41,6 +49,13 @@ jobs:
 
       - name: Build JAR
         run: ./gradlew bootJar
+
+      - name: Create .env file
+        run: |
+          echo "PROD_DB_URL=${{ secrets.PROD_DB_URL }}" >> .env
+          echo "PROD_DB_USERNAME=${{ secrets.PROD_DB_USERNAME }}" >> .env
+          echo "PROD_DB_PASSWORD=${{ secrets.PROD_DB_PASSWORD }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
