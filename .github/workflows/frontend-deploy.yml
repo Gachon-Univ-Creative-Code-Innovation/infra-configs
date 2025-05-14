@@ -31,7 +31,6 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          cd frontend
           docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ inputs.service }}:${{ inputs.tag }} .
           docker tag ${{ secrets.DOCKER_USERNAME }}/${{ inputs.service }}:${{ inputs.tag }} ${{ secrets.DOCKER_USERNAME }}/${{ inputs.service }}:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ inputs.service }}:${{ inputs.tag }}
