@@ -29,6 +29,11 @@ jobs:
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+      - name: Generate .env for Vite
+        run: |
+          echo "VITE_KAKAO_REST_KEY=${{ secrets.VITE_KAKAO_REST_KEY }}" >> .env
+          echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI }}" >> .env
+
       - name: Build and Push Docker Image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ inputs.service }}:${{ inputs.tag }} .
