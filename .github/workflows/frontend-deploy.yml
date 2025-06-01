@@ -16,7 +16,11 @@ on:
         required: true
       VITE_KAKAO_REST_KEY:
         required: true
-      VITE_KAKAO_REDIRECT_URI: # 🔥 추가
+      VITE_KAKAO_REDIRECT_URI:
+        required: true
+      VITE_GOOGLE_CLIENT_ID:
+        required: true
+      VITE_GOOGLE_REDIRECT_URI:
         required: true
 
 jobs:
